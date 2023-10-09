@@ -75,5 +75,6 @@ export function axiosGetServer(url:string, params?:any){
 }
 
 export function axiosPostServer(url:string, data?:any, params?:any){
-    return axios({url: serverUrl+url, method: 'POST', data: data, params: params});
+    return axios({url: serverUrl+url, method: 'POST', data: data, params: params, 
+    headers: {'Content-Type': 'application/json'}});
 }

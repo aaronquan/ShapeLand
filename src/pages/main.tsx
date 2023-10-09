@@ -39,6 +39,7 @@ import { AppCard } from '../components/MainPageInterface';
 import { TextInput } from '../components/Form';
 
 import ShapeLandApp, { ShapeLandAppTypes } from '../apps/ShapeLand';
+import SnakeApp from '../apps/SnakeApp';
 import { TimerTestPage, TimerQueryRequestTest } from '../apps/Tests';
 import { AnimTime } from '../game/time';
 import { ViewArea } from '../game/view';
@@ -84,7 +85,9 @@ type C2Props = {
 }
 
 const applets = [
+{name: 'Snake', render: () => <SnakeApp/>},
 {name: 'ShapeLand', render: (props:ShapeLandAppTypes) => <ShapeLandApp {...props}/>},
+//{name: 'Snake', render: () => <SnakeApp/>},
 {name: 'Trees', render: () => <TreeApp/>},
 {name: 'Test', render: (props?:C1Props) => <C1 {...props}/>},
 {name: 'Test2', render: (props?:C2Props) => <C2 {...props}/>},

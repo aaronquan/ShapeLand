@@ -177,8 +177,117 @@ export class Vector2D{
         this.x = vx * co - vy * si;
         this.y = vx * si + vy * co;
     }
+    //0 is (1, 0) vector, facing right
+    static fromAngle(rad:number):Vector2D{
+        //const y = Math.cos(rad);
+        //const x = Math.sin(rad);
+        const x = Math.cos(rad);
+        const y = Math.sin(rad);
+        return new Vector2D(x, y);
+    }
+    toRotation():Rotation{
+        if(this.y !== 0){
+            const rot = this.y < 0 ? Math.atan(-this.x/this.y)+Math.PI+Math.PI/2 : Math.atan(-this.x/this.y)+Math.PI/2;
+            return new Rotation(rot);
+        }
+        return new Rotation();
+    }
     arr(){
         return [this.x, this.y];
+    }
+}
+
+//value between 0 and 2*PI
+//0 starts facing right
+export class Rotation{
+    static twoPi = 2*Math.PI;
+    rot:number;
+    constructor(rot?:number){
+
+        this.rot = rot === undefined ? 0 : rot % Rotation.twoPi;
+        if(this.rot < 0) this.rot += Rotation.twoPi;
+    }
+    set(r:number){
+        this.rot = r % Rotation.twoPi;
+        if(this.rot < 0) this.rot += Rotation.twoPi;
+    }
+    add(r:number){
+        if(r < 0){
+            this.sub(-r);
+        }else{
+            this.rot += r;
+            if(this.rot > Rotation.twoPi){
+                this.rot -= Rotation.twoPi;
+            }
+        }
+    }
+    sub(r:number){
+        if(r < 0){
+            this.add(-r)
+        }else{
+            this.rot -= r;
+            if(this.rot < 0){
+                this.rot += Rotation.twoPi;
+            }
+        }
+    }
+    diff(rot:Rotation){
+        const rots = this.rot > rot.rot ? [rot.rot, this.rot] : [this.rot, rot.rot];
+        const d1 = rots[1] - rots[0];
+        const d2 = Rotation.twoPi - rots[1] + rots[0];
+        return Math.min(d1, d2);
+    }
+    //true clockwise, false anti-clockwise
+    closer(rot:Rotation):boolean{
+        if(this.rot > rot.rot){
+            const rots = [rot.rot, this.rot];
+            const d1 = rots[1] - rots[0]; // anticlockwise
+            const d2 = Rotation.twoPi - rots[1] + rots[0];
+            return (d1 > d2);
+        }else{
+            const rots = [this.rot, rot.rot];
+            const d1 = rots[1] - rots[0]; //clockwise
+            const d2 = Rotation.twoPi - rots[1] + rots[0]; 
+            return (d1 < d2);
+        }
+    }
+    ////true clockwise, false anti-clockwise
+    diffDirection(rot:Rotation):{difference: number; clockwise: boolean;}{
+        const ret = {difference: 0, clockwise: true};
+        if(this.rot > rot.rot){
+            const rots = [rot.rot, this.rot];
+            const d1 = rots[1] - rots[0]; // anticlockwise
+            const d2 = Rotation.twoPi - rots[1] + rots[0];
+            if(d1 > d2){
+                ret.difference = d2;
+                ret.clockwise = true;
+            }else{
+                ret.difference = d1;
+                ret.clockwise = false;
+            }
+        }else{
+            const rots = [this.rot, rot.rot];
+            const d1 = rots[1] - rots[0]; //clockwise
+            const d2 = Rotation.twoPi - rots[1] + rots[0]; 
+            if(d1 < d2){
+                ret.difference = d1;
+                ret.clockwise = true;
+            }else{
+                ret.difference = d2;
+                ret.clockwise = false;
+            }
+        }
+        return ret;
+    }
+    static fromVector(vec:Vector2D):Rotation{
+        if(vec.y !== 0){
+            const rot = vec.y < 0 ? Math.atan(-vec.x/vec.y)+Math.PI+Math.PI/2 : Math.atan(-vec.x/vec.y)+Math.PI/2;
+            return new Rotation(rot);
+        }
+        return new Rotation();
+    }
+    toVector():Vector2D{
+        return Vector2D.fromAngle(this.rot);
     }
 }
 

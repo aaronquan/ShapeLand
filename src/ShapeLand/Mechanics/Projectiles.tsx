@@ -4,6 +4,7 @@ import { ViewArea } from "../../game/view";
 import { EnemyHolder } from "../Enemy/Enemy";
 
 export type ProjectileClientUpdate = {
+    id:number;
     position: number[];
     velocity: number[];
     size:number;
@@ -17,11 +18,14 @@ export class Projectile{
     velocity: Velocity2D;
     size:number;
     pierce:boolean;
-    constructor(){
-        this.position = new Point();
-        this.velocity = new Velocity2D();
+    colour:string;
+    static idCount:number = -1;
+    constructor(pt?:Point, vel?:Vector2D){
+        this.position = pt ? pt : new Point();
+        this.velocity = vel ? new Velocity2D(vel) : new Velocity2D();
         this.size = 0.1;
         this.pierce = false;
+        this.colour = 'blue';
     }
     setVelocity(x:number, y:number){
         this.velocity.vx = x;
@@ -40,20 +44,36 @@ export class Projectile{
         }*/
     }
     draw(cr:CanvasRenderingContext2D):void{
-        cr.fillStyle = 'blue';
+        cr.fillStyle = this.colour;
         cr.beginPath();
         cr.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
         cr.fill();
     }
 
+    //only does normal projectiles
+    static fromObj(obj:ProjectileClientUpdate):Projectile{
+        const p = new Projectile();
+        p.velocity.vx = obj.velocity[0];
+        p.velocity.vy = obj.velocity[1];
+        const timeElapsed = (Date.now() - obj.time)/1000;
+        const movement = p.velocity.getMovement(timeElapsed);
+        p.position = new Point(obj.position[0]+movement.x, obj.position[1]+movement.y);
+        p.colour = 'green';
+        p.size = obj.size;
+        //console.log(p);
+        return p;
+    }
+
     clientUpdateObj(user:string):ProjectileClientUpdate{
+        Projectile.idCount++;
         return {
+            id: Projectile.idCount,
             position: this.position.arr(),
             velocity: this.velocity.arr(),
             size: this.size,
             type: 'normal',
             time: Date.now(),
-            owner: user
+            owner: user,
         }
     }
 }

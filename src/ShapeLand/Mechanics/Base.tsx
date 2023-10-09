@@ -18,7 +18,10 @@ export class Entity{
         return {isCollision: false};
     }
     draw(cr:CanvasRenderingContext2D){
-
+        cr.fillStyle = 'white';
+        cr.beginPath();
+        cr.arc(this.position.x, this.position.y, 0.4, 0, 2 * Math.PI);
+        cr.fill();
     }
     update(secs:number){
         //if(time !== undefined){
@@ -34,6 +37,22 @@ export class Entity{
     
 }
 
+export class StaticEntity{
+    position: Point;
+    constructor(pt?:Point){
+        this.position = pt ? pt : new Point();
+    }
+    collision(proj:Projectile):CollisionReturn{
+        return {isCollision: false};
+    }
+    draw(cr:CanvasRenderingContext2D):void{
+        cr.fillStyle = 'grey';
+        //cr.beginPath();
+        cr.fillRect(this.position.x-0.5, this.position.y-0.5, 1, 1);
+        //cr.fill();
+    }
+}
+
 export type CollisionReturn = {
     isCollision:boolean;
     collisionVector?:Vector2D;
@@ -42,22 +61,25 @@ export type CollisionReturn = {
 
 const stoppingVelocity = 0.001;
 
+//have diff class
 export class Velocity2D{
+    velocity: Vector2D;
     vx:number;
     vy:number;
     ax:number; //acceleration
     ay:number;
     friction:number;
-    constructor(){
-        this.vx = 0;
-        this.vy = 0;
+    constructor(vel?:Vector2D){
+        this.vx = vel ? vel.x : 0;
+        this.vy = vel ? vel.y : 0;
+        this.velocity = vel ? vel : new Vector2D();
         this.ax = 0;
         this.ay = 0;
         this.friction = 0;
     }
     update(time:number):void{
         if(time !== undefined){
-            const upd = time/1000;
+            const upd = time;
             this.setVelocity(this.vx+(this.ax*upd), this.vy+(this.ay*upd));
             if(this.friction > 0){
                 this.ax = -this.vx*this.friction*upd;
@@ -71,6 +93,11 @@ export class Velocity2D{
             }
         }
     }
+    //only implements velocity - not acceleration
+    getMovement(time:number){
+        return new Vector2D(this.vx*time, this.vy*time);
+    }
+    
     asPoint():Point{
         return new Point(this.vx, this.vy);
     }

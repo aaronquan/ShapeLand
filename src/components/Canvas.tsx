@@ -22,6 +22,16 @@ export type MousePosition = {
     y: number
 }
 
+export interface CanvasScreen{
+    resize?(winX:number, winY:number):void;
+    mouseMove(e:React.MouseEvent<HTMLCanvasElement>, pos:Point):void;
+    mouseDown(e:React.MouseEvent<HTMLCanvasElement>, pos:Point):void;
+    mouseUp(e:React.MouseEvent<HTMLCanvasElement>, pos:Point):void;
+    keyDown(e:KeyboardEvent, key:string):void;
+    keyUp(e:KeyboardEvent, key:string):void;
+    draw(cr:CanvasRenderingContext2D):void;
+}
+
 /*
 export type MouseState = {
     position: Point;

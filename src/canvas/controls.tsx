@@ -30,6 +30,10 @@ export class CanvasButton{
         //const textPt = new Point(pos.x + (width/2) - )
         //this.drawText = new DrawText(text ? text : '', size);
     }
+    setPoint(pt:Point){
+        this.button.pt = pt;
+        this.buttonText.box.pt = pt;
+    }
     setText(text:string){
         this.buttonText.text = text;
         this.text = text;
@@ -63,6 +67,10 @@ export class CanvasButton{
         //cr.fillText(this.text, textX, textY);
         this.buttonText.draw(cr);
     }
+}
+
+export class ButtonCollection{
+    
 }
 
 export class CanvasSlider{

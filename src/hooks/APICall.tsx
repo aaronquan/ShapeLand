@@ -176,6 +176,9 @@ export async function postServerQueryRequest(key:QueryKey, url:string, data?:any
     offlineCallback?:(data:any) => void): Promise<ServerRequestOutput>{
     const output = defaultServerRequestOutput();
     try{
+        //if('updates' in data){
+        //    if(data.updates.projectiles.length > 0) console.log(data.updates.projectiles);
+        //}
         const query = await queryClient.fetchQuery({
             queryKey: key, 
             queryFn: () => axiosPostServer(url, data, params)

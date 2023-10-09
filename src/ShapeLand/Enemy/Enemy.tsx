@@ -5,16 +5,44 @@ import { RandomLinePath } from "../Mechanics/TreeGraphics";
 import { Point } from "../../game/shapes";
 import { Line } from "../Mechanics/TreeGraphics";
 
+export type EnemyHit = {
+    id:number;
+    enemyId:number;
+
+}
+
+export type ServerEnemyObj = {
+    id:number;
+    position: number[];
+
+}
+
 export class EnemyHolder{
     enemies: Enemy[];
+    enemyMap: Map<number, Enemy>;
     constructor(){
         this.enemies = [];
+        this.enemyMap = new Map();
     }
     push(e:Enemy){
         this.enemies.push(e);
     }
-    update(secs:number){
-        const remEn:number[] = [];
+    update(eneObjs:ServerEnemyObj[]){
+        eneObjs.forEach(obj => {
+            if(this.enemyMap.has(obj.id)){
+                const enemy = this.enemyMap.get(obj.id);
+                if(enemy){
+                    enemy.setPosition(obj.position[0], obj.position[1]);
+                }
+            }else{
+                this.enemyMap.set(obj.id, Enemy.fromObj(obj));
+            }
+        });
+        
+        //const remEn:number[] = [];
+
+        //delete enemies if low hp
+        /*
         this.enemies.forEach((e, i) => {
             e.update(secs);
             if(e.hp < 0){
@@ -24,10 +52,22 @@ export class EnemyHolder{
 
         remEn.forEach(i => {
             this.enemies.splice(i, 1);
+        })*/
+    }
+    addEnemyObj(obj:ServerEnemyObj){
+        this.enemies.push(Enemy.fromObj(obj));
+    }
+    updateEnemies(eneObjs:ServerEnemyObj[]){
+        eneObjs.forEach(obj => {
+
         })
     }
     draw(cr:CanvasRenderingContext2D):void{
         this.enemies.forEach(e => e.draw(cr));
+
+        Array.from(this.enemyMap.values()).forEach((enemy) => {
+            enemy.draw(cr);
+        })
     }
 }
 export class Enemy extends Entity{
@@ -35,6 +75,11 @@ export class Enemy extends Entity{
     constructor(){
         super();
         this.hp = 5;
+    }
+    static fromObj(obj:ServerEnemyObj):Enemy{
+        const e = new Enemy();
+        e.setPosition(obj.position[0], obj.position[1]);
+        return e;
     }
 }
 
