@@ -1,7 +1,7 @@
 import { CanvasButton } from "../../canvas/controls";
 import { DrawTextInput } from "../../canvas/text";
 import { CanvasScreen } from "../../components/Canvas";
-import { Point, Vector2D } from "../../game/shapes";
+import { Point, Vector2D } from "../../game/geometry";
 
 export class SLEntry implements CanvasScreen{
     connectButton:CanvasButton;
@@ -45,15 +45,15 @@ export class SLEntry implements CanvasScreen{
     mouseDown(e:React.MouseEvent<HTMLCanvasElement>, pos:Point){
         this.connectButton.mouseDown(pos);
         this.offlineJoinButton.mouseDown(pos);
-        this.textBox.handleMouseDown(pos);
+        this.textBox.mouseDown(pos);
     }
     mouseUp(e:React.MouseEvent<HTMLCanvasElement>, pos:Point){
         this.connectButton.mouseUp(pos);
         this.offlineJoinButton.mouseUp(pos);
-        this.textBox.handleMouseUp(pos);
+        this.textBox.mouseUp(pos);
     }
     keyDown(e:KeyboardEvent, key:string){
-        this.textBox.handleKeyDown(e);
+        this.textBox.keyDown(e);
     }
     keyUp(e: KeyboardEvent, key: string): void {
         

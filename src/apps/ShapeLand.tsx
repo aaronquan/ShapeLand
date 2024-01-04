@@ -21,7 +21,7 @@ import { useAnim, InputChanges } from '../components/Anim';
 import { useKeys } from '../hooks/Keys';
 
 import { BasicTree, Line, RandomLinePath} from '../ShapeLand/Mechanics/TreeGraphics';
-import { Point } from '../game/shapes';
+import { Point } from '../game/geometry';
 import { CenterPointRectangle } from '../ShapeLand/Mechanics/Shapes';
 import { User } from '../pages/main';
 import { CanvasButton } from '../canvas/controls';

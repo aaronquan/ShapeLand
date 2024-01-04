@@ -1,4 +1,4 @@
-import { Point, Vector2D } from "../../game/shapes";
+import { Point, Vector2D } from "../../game/geometry";
 import { CenterPointRectangle, TLRectangle } from "./Shapes";
 
 

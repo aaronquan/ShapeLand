@@ -4,8 +4,8 @@ import { useAnim, InputChanges } from '../components/Anim';
 
 import { BasicTree, Line, RandomLinePath } from '../ShapeLand/Mechanics/TreeGraphics';
 import { CanvasSlider, CanvasButton } from '../canvas/controls';
-import { Point } from '../game/shapes';
-import { CenterPointRectangle } from '../ShapeLand/Mechanics/Shapes';
+import { Point } from '../game/geometry';
+import { CenterPointRectangle } from '../canvas/shapes';
 
 export function TreeApp() : JSX.Element{
     const width = 800; const height = 600;

@@ -1,7 +1,7 @@
-import { Point, Vector2D} from "../../game/shapes";
+import { Point, Vector2D} from "../../game/geometry";
 import { Velocity2D } from "../Mechanics/Base";
 import { Entity } from "../Mechanics/Base";
-import { Rotation } from "../../game/shapes";
+import { Rotation } from "../../game/geometry";
 
 export class SLPlayer extends Entity{
     //position: Point;

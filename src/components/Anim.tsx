@@ -1,6 +1,6 @@
 import React, {MouseEventHandler, useEffect, useState, useRef} from 'react';
 import {Canvas, MouseState, defaultMouseStateCreator} from './Canvas';
-import {Colour, Point, VirtRect, VirtCircle} from '../game/shapes';
+import {Colour, Point, VirtRect, VirtCircle} from '../game/geometry';
 import {PhysicsSim, SandSim, WaterSandSim} from '../game/phys'
 import {AnimTime} from '../game/time';
 

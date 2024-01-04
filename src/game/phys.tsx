@@ -1,5 +1,5 @@
 import React, {MouseEventHandler, useEffect, useState, useRef} from 'react';
-import {Point, VirtRect,Colour, Region} from './shapes';
+import {Point, VirtRect,Colour, Region} from './geometry';
 
 interface MoveObject{
     vx: number;
@@ -169,7 +169,9 @@ export class SandSim{
     ncols: number;
     sandColours: Array<string>;
     waterColours: Array<string>;
+    backgroundColour: string;
     constructor(wid:number, hei:number){
+        this.backgroundColour = 'white';
         this.width = wid;
         this.height = hei;
         this.grid = Array(hei); //0 - empty, 1 - wall, 2-sand, 3-water
@@ -185,7 +187,7 @@ export class SandSim{
 
         this.view = 0;
         this.x = 40; this.y = 40;
-        this.drawSize = 2;
+        this.drawSize = 4;
 
         this.ncols = 50;
         this.sandColours = [];
@@ -197,8 +199,12 @@ export class SandSim{
             stSand.addLumin(-0.01);
             this.waterColours.push(stWater.toString());
             stWater.addLumin(-0.02);
-            console.log(this.sandColours);
+            //console.log(this.sandColours);
         }
+    }
+    resize(wid:number, hei:number){
+        this.width = wid;
+        this.height = hei;
     }
     swapGrid(i:number, j:number, x:number, y:number){
         const v = this.grid[j][i];
@@ -226,11 +232,11 @@ export class SandSim{
         for(let j=this.height-2; j >= 0; j--){
             const waterParts = [];
             for(let i=0; i < this.width; i++){
-                //console.log(i);
                 if(this.grid[j][i] === 2){
                     this.sandSim(i, j);
                 }
                 if(this.grid[j][i] === 3){
+                    //this.waterSim
                     waterParts.push(new Point(i, j));
                 }
             }
@@ -476,6 +482,13 @@ export class SandSim{
         }
         return null;
     }
+    toggleView(){
+        if(this.view == 2){
+            this.view = 0;
+        }else{
+            this.view++;
+        }
+    }
     drawCell(cr:CanvasRenderingContext2D, i:number, j:number){
         const dr = Math.floor(this.deepGrid[j][i]/4);
         if(this.grid[j][i] === 1){
@@ -494,6 +507,8 @@ export class SandSim{
         }
     }
     draw(cr:CanvasRenderingContext2D){
+        cr.fillStyle = this.backgroundColour;
+        cr.fillRect(this.x, this.y, this.drawSize*this.width, this.drawSize*this.height);
         cr.strokeStyle = 'black';
         cr.strokeRect(this.x, this.y, this.drawSize*this.width, this.drawSize*this.height);
         if(this.view === 0){
@@ -535,10 +550,6 @@ export class SandSim{
                 }
             }
         }
-    }
-    toggleView(){
-        this.view++;
-        if(this.view === 3) this.view = 0;
     }
 }
 

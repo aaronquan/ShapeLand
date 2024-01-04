@@ -1,10 +1,9 @@
-import { hover } from '@testing-library/user-event/dist/hover';
 import React, {MouseEventHandler, useEffect, useState, useRef} from 'react';
 
 import { useAnim, useFunAnim,InputChanges } from './Anim';
-import { useKeys } from '../hooks/Keys';
+import { KeyState, useKeys } from '../hooks/Keys';
 
-import { Point } from '../game/shapes';
+import { Point } from '../game/geometry';
 import { AnimTime } from '../game/time';
 
 
@@ -24,6 +23,8 @@ export type MousePosition = {
 
 export interface CanvasScreen{
     resize?(winX:number, winY:number):void;
+    changeScreen?(screenId:number):void;
+    onChangeScreen?:()=>void;
     mouseMove(e:React.MouseEvent<HTMLCanvasElement>, pos:Point):void;
     mouseDown(e:React.MouseEvent<HTMLCanvasElement>, pos:Point):void;
     mouseUp(e:React.MouseEvent<HTMLCanvasElement>, pos:Point):void;
@@ -31,6 +32,67 @@ export interface CanvasScreen{
     keyUp(e:KeyboardEvent, key:string):void;
     draw(cr:CanvasRenderingContext2D):void;
 }
+
+export class CanvasScreenManager implements CanvasScreen{
+    screens: CanvasScreen[];
+    currentScreen: number | null;
+    renderChangeScreen: boolean;
+    width:number;
+    height:number;
+    constructor(width:number, height:number){
+        this.screens = [];
+        this.currentScreen = null;
+        this.renderChangeScreen = false;
+        this.width = width;
+        this.height = height;
+    }
+    mouseMove(e: React.MouseEvent<HTMLCanvasElement>, pos: Point): void {
+        if(this.currentScreen !== null) this.screens[this.currentScreen].mouseMove(e, pos);
+    }
+    mouseDown(e: React.MouseEvent<HTMLCanvasElement>, pos: Point): void {
+        if(this.currentScreen !== null) this.screens[this.currentScreen].mouseDown(e, pos);
+    }
+    mouseUp(e: React.MouseEvent<HTMLCanvasElement>, pos: Point): void {
+        if(this.currentScreen !== null) this.screens[this.currentScreen].mouseUp(e, pos);
+    }
+    keyDown(e: KeyboardEvent, key: string): void {
+        if(this.currentScreen !== null) this.screens[this.currentScreen].keyDown(e, key);
+    }
+    keyUp(e: KeyboardEvent, key: string): void {
+        if(this.currentScreen !== null) this.screens[this.currentScreen].keyUp(e, key);
+    }
+    generateScreenChangeFunction(newScreen:number){
+        return () => {
+            this.changeScreen(newScreen);
+        }
+    }
+    changeScreen(screenId: number): CanvasScreen {
+        this.currentScreen = screenId;
+        this.renderChangeScreen = true;
+        const screen = this.screens[screenId];
+        if(screen.onChangeScreen) screen.onChangeScreen();
+        return this.screens[screenId];
+    }
+    addScreen(screen:CanvasScreen){
+        this.screens.push(screen);
+        if(this.currentScreen === null) this.currentScreen = 0;
+    }
+    resize(winX:number, winY:number){
+        this.screens.forEach((screen) => {
+            if(screen.resize) screen.resize(winX, winY);
+        });
+        this.width = winX;
+        this.height = winY;
+    }
+    draw(cr: CanvasRenderingContext2D): void {
+        if(this.renderChangeScreen){
+            this.renderChangeScreen = false;
+            cr.clearRect(0, 0, this.width, this.height);
+        }
+        if(this.currentScreen !== null) this.screens[this.currentScreen].draw(cr);
+    }
+}
+
 
 /*
 export type MouseState = {
@@ -209,7 +271,7 @@ export function useCanvasEvents(){
 
 export function ArtCanvas(props:CanvasProps){
     //const [scene, setScene] = useState(0);
-    const keys = useKeys(handleKeyDown);
+    const keys:KeyState = useKeys(handleKeyDown);
     //console.log(keysDown);
     const [nowTime, setNowTime] = useState(Date.now());
     //const mousePos = useRef<Point>(new Point(0, 0));

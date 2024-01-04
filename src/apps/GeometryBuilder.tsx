@@ -4,47 +4,26 @@ import {
     useMouseState, CanvasApp, 
     defaultMouseStateCreator, MouseState } from '../components/Canvas';
 import { useAnim, InputChanges } from '../components/Anim';
-import { useKeys } from '../hooks/Keys';
-import { SnakeMain } from '../Snake/Screens/Main';
+import { KeyState, useKeys } from '../hooks/Keys';
+import { GeometryBuilder } from '../GeometryBuilder/GeometryBuilder';
 import { AnimTime } from '../game/time';
 import { useWindowSize } from '../hooks/Window';
-import { User } from '../pages/main';
 
-export type SnakeAppProps = {
-    user: User | null;
-}
-
-function SnakeApp(props:SnakeAppProps):JSX.Element{
-    const desktopWindow = useWindowSize();
+function GeometryBuilderApp():JSX.Element{
+    const window = useWindowSize();
     const paddingX = 10; const paddingY = 40;
     //const width = window.width-10; const height = window.height-40;
-    const [adjWindow, setAdjWindow] = useState({
-        width: desktopWindow.width-paddingX, height:desktopWindow.height-paddingY
-    });
+    const [adjWindow, setAdjWindow] = useState({width: window.width-paddingX, height:window.height-paddingY});
 
-    const main = useRef<SnakeMain>(new SnakeMain(adjWindow.width, adjWindow.height));
-    const keys = useKeys(handleKeyDown, handleKeyUp);
+    const main = useRef<GeometryBuilder>(new GeometryBuilder(adjWindow.width, adjWindow.height));
+    const keys:KeyState = useKeys(handleKeyDown, handleKeyUp);
     const rawMouseState = useRef<MouseState>(new MouseState());
     useEffect(() => {
-        window.addEventListener('unload', disconnectSnakeLand);
-        return () => {
-            window.removeEventListener('unload', disconnectSnakeLand);
-            disconnectSnakeLand();
-        }
-    }, []);
-    useEffect(() => {
-        const nWidth = desktopWindow.width-paddingX;
-        const nHeight = desktopWindow.height-paddingY;
+        const nWidth = window.width-paddingX;
+        const nHeight = window.height-paddingY;
         setAdjWindow({width: nWidth, height: nHeight});
         main.current.resize(nWidth, nHeight);
-    }, [desktopWindow]);
-    useEffect(() => {
-        if(props.user && props.user.name) main.current.setPlayerName(props.user.name);
-    }, [props.user]);
-    function disconnectSnakeLand(){
-        main.current.autoDisconnectServer();
-        console.log('disconnecting from snakeland');
-    }
+    }, [window]);
     function handleMouseMove(e:React.MouseEvent<HTMLCanvasElement>){
         main.current.mouseMove(e, rawMouseState.current.position);
     }
@@ -62,8 +41,8 @@ function SnakeApp(props:SnakeAppProps):JSX.Element{
     }
     function animationStep(cr:CanvasRenderingContext2D, time:number, 
         inputChanges:InputChanges, animTime:AnimTime):void{
-            main.current.updateAnimTime(animTime);
-            main.current.update(rawMouseState.current, animTime.frameTime);
+            //main.current.updateAnimTime(animTime);
+            main.current.update(animTime, inputChanges, rawMouseState.current, keys);
             main.current.draw(cr);
     }
 
@@ -77,5 +56,4 @@ function SnakeApp(props:SnakeAppProps):JSX.Element{
     )
 }
 
-
-export default SnakeApp;
+export default GeometryBuilderApp;

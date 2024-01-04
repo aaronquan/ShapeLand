@@ -11,7 +11,7 @@ import { Cookies, useCookies } from 'react-cookie';
 import {Canvas, CanvasApp, MousePosition, MouseState, defaultMouseStateCreator, useMouseState} from '../components/Canvas';
 import {Anim, InputChanges, useAnim} from '../components/Anim';
 
-import { VirtCircle, Colour, Point } from '../game/shapes';
+import { VirtCircle, Colour, Point } from '../game/geometry';
 import { 
     useServerRequest, 
     useServerGetQueryRequest, 
@@ -39,12 +39,15 @@ import { AppCard } from '../components/MainPageInterface';
 import { TextInput } from '../components/Form';
 
 import ShapeLandApp, { ShapeLandAppTypes } from '../apps/ShapeLand';
-import SnakeApp from '../apps/SnakeApp';
+import SnakeApp, { SnakeAppProps } from '../apps/SnakeApp';
 import { TimerTestPage, TimerQueryRequestTest } from '../apps/Tests';
 import { AnimTime } from '../game/time';
 import { ViewArea } from '../game/view';
 import { GridArea } from '../game/grid';
 import { TreeApp } from '../apps/Trees';
+import GeometryBuilderApp  from '../apps/GeometryBuilder';
+import { SandWaterSim } from '../apps/SandWaterSim';
+import { NumberGuessing } from '../apps/NumberGuessing';
 
 type ServerPing = {
     total: number;
@@ -85,14 +88,18 @@ type C2Props = {
 }
 
 const applets = [
-{name: 'Snake', render: () => <SnakeApp/>},
-{name: 'ShapeLand', render: (props:ShapeLandAppTypes) => <ShapeLandApp {...props}/>},
-//{name: 'Snake', render: () => <SnakeApp/>},
-{name: 'Trees', render: () => <TreeApp/>},
-{name: 'Test', render: (props?:C1Props) => <C1 {...props}/>},
-{name: 'Test2', render: (props?:C2Props) => <C2 {...props}/>},
-{name: 'TimerTest', render: () => <TimerTestPage/>},
-{name: 'TimerTest2', render: () => <TimerQueryRequestTest/>}
+    //{name: 'GeometryBuilder', render: () => <GeometryBuilderApp/>},
+    {name: 'Snake', render: (props:SnakeAppProps) => <SnakeApp {...props}/>},
+    {name: 'ShapeLand', render: (props:ShapeLandAppTypes) => <ShapeLandApp {...props}/>},
+    //{name: 'Snake', render: () => <SnakeApp/>},
+    {name: 'GeometryBuilder', render: () => <GeometryBuilderApp/>},
+    {name: 'Number Guesser', render: () => <NumberGuessing/>},
+    {name: 'Trees', render: () => <TreeApp/>},
+    {name: 'Test', render: (props?:C1Props) => <C1 {...props}/>},
+    {name: 'Test2', render: (props?:C2Props) => <C2 {...props}/>},
+    {name: 'TimerTest', render: () => <TimerTestPage/>},
+    {name: 'TimerTest2', render: () => <TimerQueryRequestTest/>},
+    {name: 'Sand Sim Test', render: () => <SandWaterSim/>}
 ];
 
 const serverStatus = [

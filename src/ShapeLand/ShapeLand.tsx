@@ -1,5 +1,5 @@
 import { MouseState, defaultMouseStateCreator } from "../components/Canvas";
-import { Point, Vector2D } from "../game/shapes";
+import { Point, Vector2D } from "../game/geometry";
 import { ViewArea } from "../game/view";
 
 import { Enemy, BasicCircleEnemy, EnemyHolder, EnemyHit } from "./Enemy/Enemy";

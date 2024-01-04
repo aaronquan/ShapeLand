@@ -1,4 +1,4 @@
-import { Point } from "../../game/shapes";
+import { Point } from "../../game/geometry";
 
 
 export class Circle{

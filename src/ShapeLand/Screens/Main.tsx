@@ -1,4 +1,4 @@
-import { Point } from "../../game/shapes";
+import { Point } from "../../game/geometry";
 import { SLEntry } from "./Entry";
 import { ShapeLandGame } from "../ShapeLand";
 import { CanvasScreen, MouseState } from "../../components/Canvas";

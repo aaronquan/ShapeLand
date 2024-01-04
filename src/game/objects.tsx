@@ -1,6 +1,6 @@
 import React, {MouseEventHandler, useEffect, useState, useRef} from 'react';
 
-import { Point } from './shapes';
+import { Point } from './geometry';
 
 class Object{
     point: Point;

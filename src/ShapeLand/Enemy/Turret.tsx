@@ -1,5 +1,5 @@
 import { StaticEntity } from "../Mechanics/Base";
-import { Point, Vector2D, Rotation } from "../../game/shapes";
+import { Point, Vector2D, Rotation } from "../../game/geometry";
 import { SLPlayer } from "../Player/Player";
 
 export type TurretUpdateReturn = {

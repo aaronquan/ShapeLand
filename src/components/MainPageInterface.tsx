@@ -1,5 +1,4 @@
 
-
 import { Card } from "react-bootstrap";
 import { OpenScreenSide } from "./Interface";
 

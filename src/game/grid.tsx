@@ -1,4 +1,4 @@
-import { Point } from "./shapes";
+import { Point } from "./geometry";
 
 export class GridArea{
     x1: number; x2: number;

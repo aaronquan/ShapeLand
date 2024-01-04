@@ -1,4 +1,4 @@
-import { Point, Vector2D} from "../../game/shapes";
+import { Point, Vector2D} from "../../game/geometry";
 import { ViewArea } from "../../game/view";
 import { EnemyHolder } from "../Enemy/Enemy";
 import { Projectile } from "./Projectiles";

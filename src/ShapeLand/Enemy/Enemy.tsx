@@ -2,7 +2,7 @@ import { Entity } from "../Mechanics/Base";
 import { Projectile } from "../Mechanics/Projectiles";
 import {CollisionReturn} from "../Mechanics/Base";
 import { RandomLinePath } from "../Mechanics/TreeGraphics";
-import { Point } from "../../game/shapes";
+import { Point } from "../../game/geometry";
 import { Line } from "../Mechanics/TreeGraphics";
 
 export type EnemyHit = {

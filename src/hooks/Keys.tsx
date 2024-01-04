@@ -2,8 +2,12 @@ import React, {useEffect, useState, useRef} from 'react';
 
 import update from 'immutability-helper';
 
+export type KeyState = {
+    keys: Set<string>, 
+    ktime: Map<string, number>
+}
 
-export function useKeys(onKeyDown?:(e:KeyboardEvent) => void, onKeyUp?:(e:KeyboardEvent) => void){
+export function useKeys(onKeyDown?:(e:KeyboardEvent) => void, onKeyUp?:(e:KeyboardEvent) => void):KeyState{
     const timeStart = useRef(Date.now());
     const keysDown = useRef(new Set<string>());
     const keysTime = useRef(new Map<string, number>());
