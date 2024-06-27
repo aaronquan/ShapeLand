@@ -20,7 +20,7 @@ export function TimeRenderer(props:PropsWithChildren<TimeRenderer>){
             setNumRenders(numRenders+1);
         }, props.period);
     }, [numRenders]);
-    console.log('x');
+    //console.log('x');
     return(
         <>{props.component(numRenders)}</>
     );

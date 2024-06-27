@@ -297,7 +297,6 @@ export class AutoSnake{
         let lastMove = {rotation: this.rotation.rot, position: this.position};
         let i = 0
         const maxMovement = this.moveSpeed*segSize;
-        //console.log(maxMovement);
         for(let i = 0; i<this.moveHistory.length; i=i+segSize){
             const move = this.moveHistory[i];
             const movementVec = move.position.diffVector(lastMove.position);
@@ -308,7 +307,6 @@ export class AutoSnake{
                 backMoves = [];
                 frontMoves = [];
                 //brokenup
-                //console.log('broken');
             }
             const width = this.bodyWidths(x);
             const rotVec = Vector2D.fromAngle(move.rotation+(Math.PI/2));

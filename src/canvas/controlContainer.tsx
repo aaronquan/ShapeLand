@@ -47,3 +47,12 @@ export class ButtonContainer implements InteractableControl{
         this.buttons.forEach(button => button.draw(cr));
     }
 }
+
+export class ButtonHorizontalRow{
+    buttonWidth: number;
+    spacing:number;
+    constructor(){
+        this.spacing = 5;
+        this.buttonWidth = 10;
+    }
+}

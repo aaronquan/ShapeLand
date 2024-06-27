@@ -1,5 +1,5 @@
-import { CenterPointRectangle, TLRectangle } from "../ShapeLand/Mechanics/Shapes";
-import { CanvasButton, InteractableControl } from "./controls";
+import { TLRectangle } from "../ShapeLand/Mechanics/Shapes";
+import { InteractableControl } from "./controls";
 import { Point, VirtRect } from "../game/geometry";
 import { IntegerRange } from "../math/Ranges";
 
@@ -41,7 +41,7 @@ export class DrawText extends BaseText{
     }
 }
 
-export class CenterBoxText  extends BaseText{
+export class CenterBoxText extends BaseText{
     box:TLRectangle;
     //text: string;
     constructor(text:string, pt:Point, width:number, height:number, size?:number, font?:string, colour?:string){
